@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IME Check</title>
+  <script type="text/javascript">
+    var imeDisabled = true;
+
+    document.addEventListener("compositionstart", function(e){
+      imeDisabled = false;
+      console.log("composition start");
+      console.log("data: " + e.data);
+    });
+    document.addEventListener("compositionupdate", function(e){
+      imeDisabled = false;
+      console.log("composition update");
+      console.log("data: " + e.data);
+    });
+    document.addEventListener("compositionend", function(e){
+      imeDisabled = false;
+      console.log("composition end");
+      console.log("data: " + e.data);
+    });
+  </script>
+</head>
+<body>
+  <h1>輸入法偵測測試</h1>
+  <input type="text" name="composition" placeholder="composition" />
+  <input type="text" name="imemode" placeholder="css ime-mode" style="ime-mode: disabled">
+  <input type="tel" name="typetel" placeholder="type tel">
+</body>
+</html>
