@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IME Check</title>
+  <style type="text/css">
+    #page {
+      margin: 30px auto;
+      width: 800px;
+    }
+    .crm-container {
+      padding: 30px;
+      border: 1px solid #333;
+    }
+    .content {
+      position: relative;
+    }
+    input {
+      padding: 5px;
+    }
+    .ime-warning {
+      margin: 10px;
+      padding: 10px;
+      color: #ff1100;
+      background: #f8dbd9;
+    }
+
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script type="text/javascript">
+  /*
+  var imeEnabled = false;
+  
+  document.addEventListener("compositionstart", function(e){
+    imeEnabled = true;
+    console.log("composition start data: " + e.data);
+  });
+  document.addEventListener("compositionupdate", function(e){
+    imeEnabled = true;
+    console.log("composition update data: " + e.data);
+  });
+  document.addEventListener("compositionend", function(e){
+    imeEnabled = true;
+    console.log("composition end data: " + e.data);
+  });
+  
+  if (imeEnabled) {
+    console.log("!!!!!");
+  }
+  */
+  var imeEnabled = false;
+  var imeWarningHTML = "<div class='ime-warning'>您正啟用中文輸入法或輸入全形字元，這可能會造成電話欄位在輸入時及時驗證遇到一些問題而無法完成輸入，請關閉中文輸入法或將字寬改為半形。</div>";
+
+  (function($) {
+    $(function() {
+      $(".crm-container .js-imecheck").each(function() {
+        var $this = $(this);
+        var $wrapper = $this.closest(".crm-form-elem");
+
+        $this.bind("compositionstart ", function (e) {
+          imeEnabled = true;
+          console.log("composition start data: " + e.data);
+        }).bind("compositionend ", function (e) {
+          imeEnabled = false;
+          console.log("composition end data: " + e.data);
+        }).bind("keydown", function (e) {
+          console.log("keydown");
+          if (e.which == 229) {
+            console.log("keydown: " + e.which);
+            imeEnabled = true;
+          } 
+          else {
+            imeEnabled = false;
+          }          
+        }).bind("keyup", function (e) {
+          console.log("keyup:" + imeEnabled);
+          console.log("keyup:" + e.which);
+          if (imeEnabled) {
+            if ($wrapper.find(".ime-warning").length == 0) {
+              $wrapper.append(imeWarningHTML);
+            }
+          } 
+          else {
+            if ($wrapper.find(".ime-warning").length > 0) {
+              $wrapper.find(".ime-warning").remove();
+            }
+          }
+        });
+
+      });
+    });
+  })(jQuery);
+  </script>
+</head>
+<body>
+  <div id="page">
+    <h1>輸入法偵測</h1>
+    <div class="crm-container">
+    <form>
+      <div class="crm-section">
+        <div class="content">
+          <div class="crm-form-elem crm-form-textfield">
+            <input maxlength="32" size="20" name="test" type="text" id="test" class="form-text js-imecheck" placeholder="請輸入...">
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
